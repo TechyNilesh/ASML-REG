@@ -52,22 +52,22 @@ To execute the benchmarking experiments, we use a Python script that orchestrate
 
 - To run all models on a specific dataset:
   ```bash
-  python script.py --mode dataset --name ailerons
+  python run_scripts.py --mode dataset --name ailerons
   ```
 
 - To run a specific model on all datasets:
   ```bash
-  python script.py --mode model --name asml
+  python run_scripts.py --mode model --name asml
   ```
 
 - To run all models on all datasets:
   ```bash
-  python script.py --mode all
+  python run_scripts.py --mode all
   ```
 
 - To run all models on all datasets with multiple runs and random seeds:
   ```bash
-  python script.py --mode random
+  python run_scripts.py --mode random
   ```
 
 This setup ensures comprehensive and efficient execution of benchmarking experiments across different models and datasets.
