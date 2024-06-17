@@ -2,41 +2,72 @@
 
 Automated Machine Learning for Data Stream Regression
 
-### Data Streams Regression Benchmarking Dataset 
+### Data Streams Regression Benchmarking Dataset
 
-The dataset files can be found in the GitHub repository folder `RDatasets`.
+The dataset files can be found in the repository folder `RDatasets`.
 
-| **Datasets**     | **N_Features** | **N_Instances** | **Source**  |
-|------------------|----------------|-----------------|-------------|
-| Ailerons         | 40             | 13750           | Synthetic   |
-| Elevators        | 18             | 16599           | Synthetic   |
-| Fried            | 10             | 40768           | Synthetic   |
-| Friedman GRA     | 10             | 100000          | Synthetic   |
-| Friedman GSG     | 10             | 100000          | Synthetic   |
-| Friedman LEA     | 10             | 100000          | Synthetic   |
-| Hyper (A)        | 10             | 500000          | Synthetic   |
-| Abalone          | 8              | 4977            | Real        |
-| Bike             | 12             | 17379           | Real        |
-| Cpu Activity     | 22             | 8192            | Real        |
-| House8L          | 8              | 22784           | Real        |
-| Kin8nm           | 9              | 8192            | Real        |
-| Metro Traffic    | 7              | 48204           | Real        |
-| White Wine       | 11             | 4898            | Real        |
+1. **Ailerons**: A synthetic dataset with 40 features and 13,750 instances, designed to simulate the control of an F16 aircraft.
+2. **Elevators**: A synthetic dataset including 18 features and 16,599 instances, representing data related to the control of an elevator system.
+3. **Fried**: A synthetic dataset with 10 features and 40,768 instances, generated using a non-linear formula to test the robustness of regression algorithms.
+4. **Friedman GRA**: A synthetic dataset with 10 features and 100,000 instances, designed to simulate Global Recurring Abrupt drift.
+5. **Friedman GSG**: A synthetic dataset with 10 features and 100,000 instances, designed to simulate Global and Slow Gradual drift.
+6. **Friedman LEA**: A synthetic dataset with 10 features and 100,000 instances, designed to simulate Local Expanding Abrupt drift.
+7. **Hyper (A)**: A synthetic dataset with 10 features and 500,000 instances, generating a hyperplane in a \(d\)-dimensional space to assess drift detection ability.
+8. **Abalone**: A real-world dataset with 8 features and 4,977 instances, used to predict the age of abalones based on physical measurements.
+9. **Bike**: A real-world dataset with 12 features and 17,379 instances, providing data on bike-sharing rentals.
+10. **Cpu Activity**: A real-world dataset with 22 features and 8,192 instances, representing measurements of CPU performance.
+11. **House8L**: A real-world dataset with 8 features and 22,784 instances, related to house prices.
+12. **Kin8nm**: A real-world dataset with 9 features and 8,192 instances, related to forward kinematics of an 8-link robot arm.
+13. **Metro Traffic**: A real-world dataset with 7 features and 48,204 instances, providing traffic data for a metropolitan area.
+14. **White Wine**: A real-world dataset with 11 features and 4,898 instances, containing chemical properties of white wine to predict its quality.
 
-Most of these datasets are standard benchmarks. For instance, the Abalone dataset, sourced from a non-machine-learning research paper [Nash, 1994](https://www.researchgate.net/profile/Warwick-Nash/publication/287546509_7he_Population_Biology_of_Abalone_Haliotis_species_in_Tasmania_I_Blacklip_Abalone_H_rubra_from_the_North_Coast_and_Islands_of_Bass_Strait/links/5d949460458515202b7bf592/7he-Population-Biology-of-Abalone-Haliotis-species-in-Tasmania-I-Blacklip-Abalone-H-rubra-from-the-North-Coast-and-Islands-of-Bass-Strait.pdf), aims to predict the age of abalones based on physical measurements. The Fried dataset [Friedman, 1991](https://doi.org/10.1214/aos/1176347963) is synthetic and uses a highly non-linear formula, incorporating irrelevant features to test the robustness of regressors:
+These datasets ensure a comprehensive evaluation of regression algorithms in diverse scenarios, combining both synthetic and real-world data.
 
-\[ y = 10\sin(\pi x_1 x_2) + 20(x_3 - 0.5)^2 + 10x_4 + 5x_5 + \sigma(0, 1) \]
+### Running Experiments
 
-The HyperA dataset [Bifet, 2011](https://proceedings.mlr.press/v11/bifet10a.html) generates a hyperplane in a \(d\)-dimensional space, where the goal is to predict the distance from randomly generated data points to the hyperplane. This dataset is particularly useful for assessing drift detection ability, as it simulates concept drift at specific intervals (125K, 250K, and 375K instances).
+To execute the benchmarking experiments, we use a Python script that orchestrates the execution of multiple models on various datasets. The script utilizes concurrent execution to run these experiments efficiently.
 
-The Friedman dataset [Ikonomovska, 2011](https://doi.org/10.1007/s10618-010-0201-y), another synthetic dataset, is designed to simulate different types of concept drift. Each observation consists of 10 features, with the first 5 being relevant. The target is defined by different functions depending on the type of drift:
+1. **Install Requirements**: Before running the experiments, ensure all required dependencies are installed by using `pip` to install the `requirements.txt` file. This can be done with the following command:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-- **LEA**: Local Expanding Abrupt drift with three points of abrupt change.
-- **GRA**: Global Recurring Abrupt drift with two points of concept drift.
-- **GSG**: Global and Slow Gradual drift with gradual change during transition windows.
+2. **Dataset and Model Lists**: 
+   - **Datasets**: The list of datasets includes `ailerons`, `elevators`, `fried`, `hyperA`, `FriedmanGsg`, `FriedmanGra`, `FriedmanLea`, `kin8nm`, `abalone`, `bike`, `House8L`, `MetroTraffic`, `cpu_activity`, and `white_wine`.
+   - **Models**: The list of models includes `asml`, `asml_med`, `asml_best`, `chacha`, `soknl`, `arf`, `hat`, and `eaml`.
 
-These synthetic datasets, along with real-world datasets, ensure a comprehensive evaluation of the algorithm's performance in diverse scenarios.
+3. **Run Counts**: The experiments are run 10 times (from 1 to 10) to ensure robustness and reproducibility.
 
-# Requirements
+4. **Running a Script**: The `run_script` function takes a dataset name, model name, run count, and a flag for a random seed. It constructs the command to execute the model-specific script with appropriate arguments.
 
-# Run Code
+5. **Execution Modes**: 
+   - **Single Model on All Datasets**: runs a specific model on all datasets concurrently.
+   - **All Models on a Single Dataset**: runs all models on a specific dataset concurrently.
+   - **All Models on All Datasets**: runs all models on all datasets concurrently.
+   - **Randomized Runs**: runs all models on all datasets with multiple runs (10 times) using random seeds.
+
+7. **Command-Line Interface**: The script uses `argparse` to provide a command-line interface. The user can specify the mode (`dataset`, `model`, `all`, or `random`) and optionally the name of the dataset or model to run specific experiments.
+
+### Example Commands
+
+- To run all models on a specific dataset:
+  ```bash
+  python script.py --mode dataset --name ailerons
+  ```
+
+- To run a specific model on all datasets:
+  ```bash
+  python script.py --mode model --name asml
+  ```
+
+- To run all models on all datasets:
+  ```bash
+  python script.py --mode all
+  ```
+
+- To run all models on all datasets with multiple runs and random seeds:
+  ```bash
+  python script.py --mode random
+  ```
+
+This setup ensures comprehensive and efficient execution of benchmarking experiments across different models and datasets.

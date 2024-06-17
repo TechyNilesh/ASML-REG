@@ -4,7 +4,7 @@ import numpy as np
 import random
 
 
-class AutoStreamRegressorBase(base.Regressor):
+class AutoStreamRegressor(base.Regressor):
     def __init__(
         self,
         config_dict=None,
@@ -13,6 +13,7 @@ class AutoStreamRegressorBase(base.Regressor):
         budget=10,
         ensemble_size=3,
         prediction_mode='ensemble', #best, ensemble
+        aggregation_method='mean', # mean, median
         feature_selection=True,
         verbose=False,
         seed=42
@@ -23,6 +24,7 @@ class AutoStreamRegressorBase(base.Regressor):
             exploration_window=exploration_window,
             budget=budget,
             ensemble_size=ensemble_size,
+            aggregation_method = aggregation_method,
             prediction_mode=prediction_mode,
             feature_selection=feature_selection,
             verbose=verbose,
@@ -36,6 +38,7 @@ class AutoStreamRegressorBase(base.Regressor):
         self.timestep = 0
         self.verbose = verbose
         self.seed = seed
+        self.aggregation_method = aggregation_method
         
         self.current_score = None
         self.new_pipeline_probability= 0.5
@@ -61,9 +64,11 @@ class AutoStreamRegressorBase(base.Regressor):
             self.model_snapshots_metrics = [type(self.metric)() for _ in range(self.ensemble_size)]
     
     @staticmethod
-    def validate_params(config_dict, metric, exploration_window, budget, ensemble_size, prediction_mode, feature_selection, verbose, seed):
+    def validate_params(config_dict, metric, exploration_window, budget, ensemble_size,aggregation_method, prediction_mode, feature_selection, verbose, seed):
         if prediction_mode not in ['best', 'ensemble']:
             raise ValueError("prediction_mode must be string and either 'best' or 'ensemble'")
+        if aggregation_method not in ['mean', 'median']:
+            raise ValueError("aggregation_method must be string and either 'mean' or 'median'")
         if seed is not None and not isinstance(seed, int):
             raise ValueError("seed must be an integer or None")
         if not isinstance(verbose, bool):
@@ -112,8 +117,10 @@ class AutoStreamRegressorBase(base.Regressor):
                     predictions.append(reg.predict_one(x))
                 except Exception:
                     continue
-            
-            return np.mean(predictions) if predictions else 0.0
+            if self.aggregation_method == 'median':
+                return np.median(predictions) if predictions else 0.0
+            else:
+                return np.mean(predictions) if predictions else 0.0
 
     def learn_one(self, x, y):
         for idx, _ in enumerate(self.pipeline_list):

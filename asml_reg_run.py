@@ -85,8 +85,6 @@ def main(dataset_name:str,
         "memory": memories
     }
     
-    save_record['model'] += '_PWHNS'
-    
     if AM == 'median':
         save_record['model'] += '_MED'
     
