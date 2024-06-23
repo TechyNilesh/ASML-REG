@@ -36,17 +36,13 @@ To execute the benchmarking experiments, we use a Python script that orchestrate
    - **Datasets**: The list of datasets includes `ailerons`, `elevators`, `fried`, `hyperA`, `FriedmanGsg`, `FriedmanGra`, `FriedmanLea`, `kin8nm`, `abalone`, `bike`, `House8L`, `MetroTraffic`, `cpu_activity`, and `white_wine`.
    - **Models**: The list of models includes `asml`, `asml_med`, `asml_best`, `chacha`, `soknl`, `arf`, `hat`, and `eaml`.
 
-3. **Run Counts**: The experiments are run 10 times (from 1 to 10) to ensure robustness and reproducibility.
-
-4. **Running a Script**: The `run_script` function takes a dataset name, model name, run count, and a flag for a random seed. It constructs the command to execute the model-specific script with appropriate arguments.
-
-5. **Execution Modes**: 
+3. **Execution Modes**: 
    - **Single Model on All Datasets**: runs a specific model on all datasets concurrently.
    - **All Models on a Single Dataset**: runs all models on a specific dataset concurrently.
    - **All Models on All Datasets**: runs all models on all datasets concurrently.
    - **Randomized Runs**: runs all models on all datasets with multiple runs (10 times) using random seeds.
 
-7. **Command-Line Interface**: The script uses `argparse` to provide a command-line interface. The user can specify the mode (`dataset`, `model`, `all`, or `random`) and optionally the name of the dataset or model to run specific experiments.
+4. **Command-Line Interface**: The script uses `argparse` to provide a command-line interface. The user can specify the mode (`dataset`, `model`, `all`, or `random`) and optionally the name of the dataset or model to run specific experiments.
 
 ### Example Commands
 
@@ -71,3 +67,4 @@ To execute the benchmarking experiments, we use a Python script that orchestrate
   ```
 
 This setup ensures comprehensive and efficient execution of benchmarking experiments across different models and datasets.
+
